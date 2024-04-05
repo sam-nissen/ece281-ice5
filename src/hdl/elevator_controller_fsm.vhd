@@ -98,10 +98,11 @@ begin
 	-- Next State Logic
     f_Q_next <= s_floor2 when (f_Q = s_floor1 AND i_up_down = '1') else -- going up
                 s_floor3 when (f_Q = s_floor2 AND i_up_down = '1') else
-                s_floor4 when (f_Q = s_floor3 AND i_up_down = '1') else
+                s_floor4 when ((f_Q = s_floor3 AND i_up_down = '1') OR (f_Q = s_floor4 AND i_up_down = '1')) else
                 s_floor3 when (f_Q = s_floor4 AND i_up_down = '0') else -- going down
                 s_floor2 when (f_Q = s_floor3 AND i_up_down = '0') else
                 s_floor1 when (f_Q = s_floor2 AND i_up_down = '0') else
+                --s_floor1 when (f_Q = s_floor1 AND i_up_down = '0') else
                 s_floor2; -- default case
   
 	-- Output logic
