@@ -98,12 +98,11 @@ begin
 	-- Next State Logic
     f_Q_next <= s_floor2 when (f_Q = s_floor1 AND i_up_down = '1') else -- going up
                 s_floor3 when (f_Q = s_floor2 AND i_up_down = '1') else
-                s_floor4 when ((f_Q = s_floor3 AND i_up_down = '1') OR (f_Q = s_floor4 AND i_up_down = '1')) else
+                s_floor4 when (f_Q = s_floor3 AND i_up_down = '1') else
                 s_floor3 when (f_Q = s_floor4 AND i_up_down = '0') else -- going down
                 s_floor2 when (f_Q = s_floor3 AND i_up_down = '0') else
                 s_floor1 when (f_Q = s_floor2 AND i_up_down = '0') else
-                --s_floor1 when (f_Q = s_floor1 AND i_up_down = '0') else
-                s_floor2; -- default case
+                f_Q; -- default case
   
 	-- Output logic
     with f_Q select
@@ -123,9 +122,7 @@ begin
         if (rising_edge(i_clk)) then
             if i_reset = '1' then
                 f_Q <= s_floor2;
-            end if;
-                
-            if i_stop = '0' then -- if elevator is enabled, advance floors
+            elsif i_stop = '0' then -- if elevator is enabled, advance floors
                 f_Q <= f_Q_next;
             elsif i_stop = '1' then -- if not enabled, stay at current floor
                 f_Q <= f_Q;   
